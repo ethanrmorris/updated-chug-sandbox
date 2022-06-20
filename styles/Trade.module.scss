@@ -1,0 +1,39 @@
+.title {
+  font-size: 18px;
+}
+
+.player {
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.team {
+  padding-left: 1rem;
+  font-size: 14px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: clamp(600px, 100%, 800px);
+  margin: 1rem auto;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem 0.25rem rgb(235, 235, 235);
+  cursor: pointer;
+
+  .cardTitle {
+    font-weight: 600;
+  }
+
+  .parts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &:hover {
+    box-shadow: 0 0 1rem 0.75rem rgb(235, 235, 235);
+  }
+}
