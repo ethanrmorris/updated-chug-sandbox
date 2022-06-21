@@ -187,7 +187,7 @@ export default function Stats({ results }) {
                 },
               })}
             >
-              Total
+              {row?.original?.subRows.length} Teams
             </span>
           ) : (
             <span>{row?.original?.owner}</span>
@@ -242,6 +242,7 @@ export async function getStaticProps() {
     const results = seasons.map((e) => ({
       ...e,
       subRows: filterDetails(e).length > 1 ? filterDetails(e) : null,
+      owner: filterDetails(e).length < 2 ? filterDetails(e)[0].owner : null,
     }));
 
     return {
