@@ -44,84 +44,95 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <>
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
-                  {/* Add a sort direction indicator */}
-                  <span>
-                    {column.isSorted ? (column.isSortedDesc ? ' +' : ' -') : ''}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  );
-                })}
+      <div className={styles.scroll}>
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render('Header')}
+                    {/* Add a sort direction indicator */}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? ' +'
+                          : ' -'
+                        : ''}
+                    </span>
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      {/*
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {/*
         Pagination can be built however you'd like.
         This is just a very basic UI implementation:
       */}
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'First'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'Previous'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'Next'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'Last'}
-        </button>{' '}
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <span>
-          | Go to page:{' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
+      </div>
+      <div>
+        <div className="pagination">
+          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {'First'}
+          </button>{' '}
+          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+            {'Previous'}
+          </button>{' '}
+          <button onClick={() => nextPage()} disabled={!canNextPage}>
+            {'Next'}
+          </button>{' '}
+          <button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {'Last'}
+          </button>{' '}
+          <span>
+            Page{' '}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>{' '}
+          </span>
+          <span>
+            | Go to page:{' '}
+            <input
+              type="number"
+              defaultValue={pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                gotoPage(page);
+              }}
+              style={{ width: '100px' }}
+            />
+          </span>{' '}
+          <select
+            value={pageSize}
             onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
+              setPageSize(Number(e.target.value));
             }}
-            style={{ width: '100px' }}
-          />
-        </span>{' '}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[25, 50, 100, 250].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+          >
+            {[25, 50, 100, 250, 500, 1000, 2500, 5000].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </>
   );
@@ -133,11 +144,11 @@ export default function Stats({ results }) {
       {
         // Build our expander column
         id: 'expander', // Make sure it has an ID
-        // Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
-        //   <span {...getToggleAllRowsExpandedProps()}>
-        //     {isAllRowsExpanded ? '👇' : '👉'}
-        //   </span>
-        // ),
+        Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
+          <span {...getToggleAllRowsExpandedProps()}>
+            {isAllRowsExpanded ? '👇' : '👉'}
+          </span>
+        ),
         width: 40,
         Cell: ({ row }) =>
           // Use the row.canExpand and row.getToggleRowExpandedProps prop getter
@@ -161,13 +172,14 @@ export default function Stats({ results }) {
         Header: 'Name',
         accessor: 'player_name',
         width: 200,
-        Cell: ({ row }) => (
-          <>
-            <Link href={`/players/${row?.original?.player_id}`}>
-              <a>{row?.original?.player_name}</a>
-            </Link>
-          </>
-        ),
+        Cell: ({ row }) =>
+          row.isExpanded ? null : (
+            <>
+              <Link href={`/players/${row?.original?.player_id}`}>
+                <a>{row?.original?.player_name}</a>
+              </Link>
+            </>
+          ),
       },
       {
         Header: 'Owner',
@@ -213,6 +225,76 @@ export default function Stats({ results }) {
           </>
         ),
       },
+      {
+        Header: 'Yards',
+        accessor: 'pass_yards',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p className={styles.fp}>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'TDs',
+        accessor: 'pass_td',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p className={styles.fp}>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Int',
+        accessor: 'pass_int',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p className={styles.fp}>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: '2 Pt',
+        accessor: 'pass_2pt',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p className={styles.fp}>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Yards',
+        accessor: 'rush_yards',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p className={styles.fp}>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Tds',
+        accessor: 'rush_td',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p className={styles.fp}>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: '2 Pt',
+        accessor: 'rush_2pt',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p className={styles.fp}>{e.value}</p>
+          </>
+        ),
+      },
     ],
     []
   );
@@ -239,11 +321,15 @@ export async function getStaticProps() {
       });
     }
 
-    const results = seasons.map((e) => ({
-      ...e,
-      subRows: filterDetails(e).length > 1 ? filterDetails(e) : null,
-      owner: filterDetails(e).length < 2 ? filterDetails(e)[0].owner : null,
-    }));
+    const results = seasons
+      .map((e) => ({
+        ...e,
+        subRows: filterDetails(e).length > 1 ? filterDetails(e) : null,
+        owner: filterDetails(e).length < 2 ? filterDetails(e)[0].owner : null,
+      }))
+      .sort((a, b) =>
+        parseInt(a.fantasy_points) < parseInt(b.fantasy_points) ? 1 : -1
+      );
 
     return {
       props: { results },
