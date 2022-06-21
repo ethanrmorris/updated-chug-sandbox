@@ -33,6 +33,16 @@ export default function Layout({ children }) {
                   </Link>
                 </li>
                 <li className={styles.mainNavLink}>
+                  <Link href="/seasons">
+                    <a>Seasons</a>
+                  </Link>
+                </li>
+                <li className={styles.mainNavLink}>
+                  <Link href="/career">
+                    <a>Career</a>
+                  </Link>
+                </li>
+                <li className={styles.mainNavLink}>
                   <Link href="/owners">
                     <a>Owners</a>
                   </Link>
