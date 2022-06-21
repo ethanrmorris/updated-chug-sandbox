@@ -173,7 +173,7 @@ export default function Stats({ results }) {
         accessor: 'player_name',
         width: 200,
         Cell: ({ row }) =>
-          row.isExpanded ? null : (
+          row.depth === 1 ? null : (
             <>
               <Link href={`/players/${row?.original?.player_id}`}>
                 <a>{row?.original?.player_name}</a>
