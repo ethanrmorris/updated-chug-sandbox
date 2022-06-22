@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import styles from '../styles/Stats.module.scss';
+
 import { useTable, usePagination, useSortBy, useFlexLayout } from 'react-table';
 
 function Table({ columns, data }) {
@@ -151,7 +151,77 @@ export default function Stats({ results }) {
         width: 50,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Yards',
+        accessor: 'pass_yards',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'TDs',
+        accessor: 'pass_td',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Int',
+        accessor: 'pass_int',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: '2 Pt',
+        accessor: 'pass_2pt',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Yards',
+        accessor: 'rush_yards',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Tds',
+        accessor: 'rush_td',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: '2 Pt',
+        accessor: 'rush_2pt',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
           </>
         ),
       },

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import styles from '../styles/Stats.module.scss';
+
 import {
   useTable,
   usePagination,
@@ -44,7 +44,7 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <>
-      <div className={styles.scroll}>
+      <div>
         <table {...getTableProps()}>
           <thead>
             {headerGroups.map((headerGroup) => (
@@ -164,7 +164,7 @@ export default function Stats({ results }) {
                 },
               })}
             >
-              {row.isExpanded ? '_' : '+'}
+              {row.isExpanded ? '--' : '+'}
             </span>
           ) : null,
       },
@@ -176,7 +176,7 @@ export default function Stats({ results }) {
           row.depth === 1 ? null : (
             <>
               <Link href={`/players/${row?.original?.player_id}`}>
-                <a className={styles.link}>{row?.original?.player_name}</a>
+                <a>{row?.original?.player_name}</a>
               </Link>
             </>
           ),
@@ -211,7 +211,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -221,7 +221,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -231,7 +231,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -241,7 +241,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -251,7 +251,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -261,7 +261,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -271,7 +271,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -281,7 +281,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },
@@ -291,7 +291,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p className={styles.fp}>{e.value}</p>
+            <p>{e.value}</p>
           </>
         ),
       },

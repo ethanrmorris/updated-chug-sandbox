@@ -10,7 +10,6 @@ export default function Supabase({ trades }) {
           <span>
             {alldata.owner_2} {alldata.year}
           </span>
-          <span></span>
         </p>
       ))}
     </>

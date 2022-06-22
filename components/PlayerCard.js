@@ -1,12 +1,11 @@
 import Link from 'next/link';
-import styles from '../styles/PlayerCard.module.scss';
 
 export default function PlayerCard({ id }) {
   return (
     <>
-      <Link href={`/players/${id.player_id}`} className={styles.cardWrapper}>
+      <Link href={`/players/${id.player_id}`}>
         <a>
-          <div className={styles.card}>
+          <div>
             <img
               src={`https://sleepercdn.com/content/nfl/players/${id.player_id}.jpg`}
             ></img>

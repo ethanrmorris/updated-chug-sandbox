@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import TradePart from '../components/TradePart';
-import styles from '../styles/Trade.module.scss';
+
 import { supabase } from '../utils/supabaseClient';
 
 export default function Home({ results }) {
@@ -8,11 +8,11 @@ export default function Home({ results }) {
     <div>
       <h1>{results.length}</h1>
       {results.map((trade) => (
-        <div key={trade.id} className={styles.card}>
-          <p className={styles.cardTitle}>
+        <div key={trade.id}>
+          <p>
             #{trade.id} - {trade.date}
           </p>
-          <div className={styles.parts}>
+          <div>
             <TradePart owner={trade.owner_1} piece={trade.players_1} />
             <TradePart owner={trade.owner_2} piece={trade.players_2} />
             {trade.owner_3 && (

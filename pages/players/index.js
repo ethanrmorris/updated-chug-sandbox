@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import PlayerCard from '../../components/PlayerCard';
-import styles from '../../styles/Player.module.scss';
 
 export default function Players({ results }) {
   return (
-    <div className={styles.grid}>
+    <div>
       <PlayerCard id={results[1234]} />
       <PlayerCard id={results[4881]} />
       <PlayerCard id={results[6813]} />
