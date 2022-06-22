@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import _, { groupBy } from 'underscore';
 
 export default function Schedule({ results }) {
+  console.log(results);
   return (
     <>
       <div className="max-w-[1200px] mx-auto text-center">
@@ -12,23 +14,26 @@ export default function Schedule({ results }) {
         </select>
         <div>
           {results.map((game) => (
-            <h2>
-              <span
-                className={
-                  game.team_points > game.opponent_points ? 'font-bold' : null
-                }
-              >
-                {game.team} {game.team_points}
-              </span>{' '}
-              -{' '}
-              <span
-                className={
-                  game.opponent_points > game.team_points ? 'font-bold' : null
-                }
-              >
-                {game.opponent_points} {game.opponent}
-              </span>
-            </h2>
+            <div key={game.id}>
+              <p>{game.week}</p>
+              <h2>
+                <span
+                  className={
+                    game.team_points > game.opponent_points ? 'font-bold' : null
+                  }
+                >
+                  {game.team} {game.team_points}
+                </span>{' '}
+                -{' '}
+                <span
+                  className={
+                    game.opponent_points > game.team_points ? 'font-bold' : null
+                  }
+                >
+                  {game.opponent_points} {game.opponent}
+                </span>
+              </h2>
+            </div>
           ))}
         </div>
       </div>
@@ -39,7 +44,13 @@ export default function Schedule({ results }) {
 export async function getStaticProps() {
   try {
     const res = await fetch('https://ethanrmorris.github.io/v1/schedule.json');
-    const results = await res.json();
+    const data = await res.json();
+
+    const newResults = _.groupBy(data, 'week');
+
+    const results = Object.values(newResults);
+
+    console.log(results);
 
     return {
       props: { results },
