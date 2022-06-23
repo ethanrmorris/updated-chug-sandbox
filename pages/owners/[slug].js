@@ -46,7 +46,7 @@ export async function getStaticProps({ params }) {
       rostersRes.json(),
     ]);
 
-    console.log('slug', parseInt(params.slug));
+    // console.log('slug', parseInt(params.slug));
 
     const rostersArray = Object.values(rosters);
 

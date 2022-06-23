@@ -44,8 +44,11 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <>
-      <div>
-        <table {...getTableProps()}>
+      <div className="overflow-x-auto">
+        <table
+          {...getTableProps()}
+          className="table-fixed overflow-scroll w-full"
+        >
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -144,29 +147,29 @@ export default function Stats({ results }) {
       {
         // Build our expander column
         id: 'expander', // Make sure it has an ID
-        Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
-          <span {...getToggleAllRowsExpandedProps()}>
-            {isAllRowsExpanded ? '👇' : '👉'}
-          </span>
-        ),
-        width: 40,
-        Cell: ({ row }) =>
+        // Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
+        //   // <span {...getToggleAllRowsExpandedProps()}>
+        //   //   {isAllRowsExpanded ? '👇' : '👉'}
+        //   // </span>
+        // ),
+        width: 0,
+        Cell: ({ row }) => (
           // Use the row.canExpand and row.getToggleRowExpandedProps prop getter
           // to build the toggle for expanding a row
-          row.canExpand ? (
-            <span
-              {...row.getToggleRowExpandedProps({
-                style: {
-                  // We can even use the row.depth property
-                  // and paddingLeft to indicate the depth
-                  // of the row
-                  paddingLeft: `${row.depth * 2}rem`,
-                },
-              })}
-            >
-              {row.isExpanded ? '--' : '+'}
-            </span>
-          ) : null,
+          // row.canExpand ? (
+          <span
+            {...row.getToggleRowExpandedProps()}
+            //       style: {
+            //         // We can even use the row.depth property
+            //         // and paddingLeft to indicate the depth
+            //         // of the row
+            //         paddingLeft: `${row.depth * 2}rem`,
+            //       },
+          >
+            {/* {row.isExpanded ? '--' : '+'} */}
+          </span>
+        ),
+        // ) : null,
       },
       {
         Header: 'Name',
@@ -184,7 +187,7 @@ export default function Stats({ results }) {
       {
         Header: 'Owner',
         accessor: 'owner',
-        width: 60,
+        width: 80,
         Cell: ({ row }) =>
           // Use the row.canExpand and row.getToggleRowExpandedProps prop getter
           // to build the toggle for expanding a row
@@ -288,6 +291,46 @@ export default function Stats({ results }) {
       {
         Header: '2 Pt',
         accessor: 'rush_2pt',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Solo',
+        accessor: 'idp_solo',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Asst',
+        accessor: 'idp_asst',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'Int',
+        accessor: 'idp_int',
+        width: 70,
+        Cell: (e) => (
+          <>
+            <p>{e.value}</p>
+          </>
+        ),
+      },
+      {
+        Header: 'sack',
+        accessor: 'idp_sack',
         width: 70,
         Cell: (e) => (
           <>

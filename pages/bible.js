@@ -7,8 +7,8 @@ export default function Bible({ results }) {
         Chug League Bible
       </h1>
       <div className="grid grid-cols-[250px_1fr] gap-10 max-w-[1200px] mx-auto">
-        <nav className="sticky top-16 self-start">
-          <ul>
+        <nav className="sticky top-20 self-start">
+          <ul className="">
             {results.map((article) => (
               <li className="py-1">
                 <a href={`#${article.id}`}>
@@ -20,7 +20,11 @@ export default function Bible({ results }) {
         </nav>
         <div className="max-w-[800px]">
           {results.map((rule) => (
-            <section key={rule.id} id={`${rule.id}`} className="pb-6">
+            <section
+              key={rule.id}
+              id={`${rule.id}`}
+              className="pb-6 scroll-mt-20"
+            >
               <h2 className="text-2xl font-bold text-center">
                 Article {rule.id} - {rule.article}
               </h2>
