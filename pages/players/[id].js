@@ -6,7 +6,7 @@ import Table from '../../components/careerTable';
 
 import { nflTeams } from '../../utils/nflTeams';
 
-export default function Player({ results, cleanSingle }) {
+export default function Player({ results }) {
   const columns = React.useMemo(
     () => [
       {
@@ -115,7 +115,7 @@ export default function Player({ results, cleanSingle }) {
     []
   );
 
-  const data = React.useMemo(() => cleanSingle, []);
+  const data = React.useMemo(() => results.stats, []);
 
   return (
     <div className="bg-white shadow-md">
@@ -174,7 +174,11 @@ export default function Player({ results, cleanSingle }) {
       </div>
       <div className="pt-12">
         <h4>Rushing</h4>
-        {cleanSingle ? <Table columns={columns} data={data} /> : null}
+        {!results.stats === [null] ? (
+          <Table columns={columns} data={data} />
+        ) : (
+          'No Stats Accrued'
+        )}
       </div>
     </div>
   );
@@ -255,15 +259,16 @@ export async function getStaticProps({ params }) {
       return obj.player_id === params.id;
     });
 
-    // console.log(careerSingle);
-
-    // const cleanSingle = [];
-    // cleanSingle.push(careerSingle);
+    const cleanSingle = [];
+    careerSingle ? cleanSingle.push(careerSingle) : cleanSingle.push(null);
 
     const results = {
       ...lastResults,
       asmc: ownerName ? ownerName : null,
+      stats: cleanSingle,
     };
+
+    console.log(results);
 
     return {
       props: { results },
