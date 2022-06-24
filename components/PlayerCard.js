@@ -9,7 +9,7 @@ export default function PlayerCard({ id }) {
           <div className="flex flex-col items-center bg-white w-full p-4 rounded-md shadow-md hover:shadow-xl">
             <div className="relative h-60 w-60">
               <span
-                className={`block absolute inset-0 bg-contain opacity-30`}
+                className={`block absolute inset-0 bg-[url('/logo-${id.asmc}.webp')] bg-contain opacity-30`}
               ></span>
               <Image
                 src={`https://sleepercdn.com/content/nfl/players/${id.player_id}.jpg`}

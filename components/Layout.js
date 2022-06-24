@@ -17,9 +17,9 @@ export default function Layout({ children }) {
   return (
     <>
       <div
-        className={`bg-teal-100 sticky top-0 ${scrolled ? 'shadow-lg' : null}`}
+        className={`bg-[#222222] sticky top-0 ${scrolled ? 'shadow-lg' : null}`}
       >
-        <header className="p-4 bg-teal-100 sticky top-0 max-w-[1200px] mx-auto">
+        <header className="p-4 bg-[#222222] text-white sticky top-0 max-w-[1200px] mx-auto">
           {/* <Image src="/mlb.svg" width={80} height={50} alt={'Logo'} /> */}
           <div className="flex justify-between">
             <nav>

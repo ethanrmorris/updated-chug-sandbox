@@ -6,8 +6,8 @@ export default function Bible({ results }) {
       <h1 className="max-w-[1200px] mx-auto text-3xl font-bold pb-10 text-center">
         Chug League Bible
       </h1>
-      <div className="grid grid-cols-[250px_1fr] gap-10 max-w-[1200px] mx-auto">
-        <nav className="sticky top-20 self-start">
+      <div className="md:grid md:grid-cols-[225px_1fr] md:gap-10 lg:gap-20 max-w-[1200px] mx-auto">
+        <nav className="hidden md:block sticky top-20 self-start">
           <ul className="">
             {results.map((article) => (
               <li className="py-1">
