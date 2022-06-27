@@ -13,10 +13,10 @@ export default function Home({ results }) {
             #{trade.id} - {trade.date}
           </p>
           <div>
-            <TradePart owner={trade.owner_1} piece={trade.players_1} />
-            <TradePart owner={trade.owner_2} piece={trade.players_2} />
+            <TradePart owner={trade.id_1.team} piece={trade.players_1} />
+            <TradePart owner={trade.id_2.team} piece={trade.players_2} />
             {trade.owner_3 && (
-              <TradePart owner={trade.owner_3} piece={trade.players_3} />
+              <TradePart owner={trade.id_3.team} piece={trade.players_3} />
             )}
           </div>
         </div>
@@ -29,7 +29,28 @@ export async function getStaticProps() {
   try {
     const { data: results } = await supabase
       .from('trades')
-      .select('*')
+      .select(
+        `
+        id,
+        year,
+        date,
+        owner_1,
+        id_1 (
+          team
+        ),
+        players_1,
+        owner_2,
+        id_2 (
+          team
+        ),
+        players_2,
+        owner_3,
+        id_3 (
+          team
+        ),
+        players_3
+      `
+      )
       // .or('owner_1.eq.ethan,owner_2.eq.ethan,owner_3.eq.ethan')
       .order('id', { ascending: false });
 
