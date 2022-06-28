@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import Table from '../components/careerTable';
+import { supabase } from '../utils/supabaseClient';
 
 export default function Stats({ results }) {
   const columns = React.useMemo(
@@ -23,18 +24,29 @@ export default function Stats({ results }) {
           },
           {
             Header: 'Owner',
-            accessor: 'owner',
-            width: 80,
+            accessor: 'owner_id.team',
+            width: 175,
           },
         ],
+      },
+      {
+        Header: 'Year',
+        accessor: 'year',
+        width: 60,
+      },
+      {
+        Header: 'Week',
+        accessor: 'week',
+        width: 60,
       },
       {
         Header: 'FP',
         accessor: 'fantasy_points',
         width: 50,
+        sortType: 'basic',
         Cell: (e) => (
           <>
-            <p>{e.value}</p>
+            <p className="tabular-nums text-right">{e.value.toFixed(2)}</p>
           </>
         ),
       },
@@ -44,7 +56,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p>{e.value}</p>
+            <p className="text-right">{e.value}</p>
           </>
         ),
       },
@@ -54,7 +66,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p>{e.value}</p>
+            <p className="text-right">{e.value}</p>
           </>
         ),
       },
@@ -64,7 +76,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p>{e.value}</p>
+            <p className="text-right">{e.value}</p>
           </>
         ),
       },
@@ -74,37 +86,7 @@ export default function Stats({ results }) {
         width: 70,
         Cell: (e) => (
           <>
-            <p>{e.value}</p>
-          </>
-        ),
-      },
-      {
-        Header: 'Yards',
-        accessor: 'rush_yards',
-        width: 70,
-        Cell: (e) => (
-          <>
-            <p>{e.value}</p>
-          </>
-        ),
-      },
-      {
-        Header: 'Tds',
-        accessor: 'rush_td',
-        width: 70,
-        Cell: (e) => (
-          <>
-            <p>{e.value}</p>
-          </>
-        ),
-      },
-      {
-        Header: '2 Pt',
-        accessor: 'rush_2pt',
-        width: 70,
-        Cell: (e) => (
-          <>
-            <p>{e.value}</p>
+            <p className="text-right">{e.value}</p>
           </>
         ),
       },
@@ -119,10 +101,28 @@ export default function Stats({ results }) {
 
 export async function getStaticProps() {
   try {
-    const res = await fetch(
-      'https://ethanrmorris.github.io/v1/stats/players/games.json'
-    );
-    const results = await res.json();
+    const { data: results } = await supabase
+      .from('game_logs')
+      .select(
+        `
+        id, player_name, player_id, position, 
+        owner_id (
+          team
+        ),
+        year,
+        week,
+        fantasy_points,
+        pass_yards,
+        pass_td,
+        pass_int,
+        pass_2pt
+        
+      `
+      )
+      .lt('week', 18)
+      .order('fantasy_points', { ascending: false });
+
+    console.log(results);
 
     return {
       props: { results },
