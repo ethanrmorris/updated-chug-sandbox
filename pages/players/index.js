@@ -21,6 +21,8 @@ export async function getStaticProps() {
     const res = await fetch('https://ethanrmorris.github.io/v1/players.json');
     const results = await res.json();
 
+    console.log(results);
+
     return {
       props: { results },
     };

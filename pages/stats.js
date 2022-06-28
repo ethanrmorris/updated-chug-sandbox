@@ -102,7 +102,7 @@ export default function Stats({ results }) {
 export async function getStaticProps() {
   try {
     const { data: results } = await supabase
-      .from('game_logs')
+      .from('players_games')
       .select(
         `
         id, player_name, player_id, position, 
@@ -121,8 +121,6 @@ export async function getStaticProps() {
       )
       .lt('week', 18)
       .order('fantasy_points', { ascending: false });
-
-    console.log(results);
 
     return {
       props: { results },

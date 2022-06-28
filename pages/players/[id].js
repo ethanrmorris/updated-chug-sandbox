@@ -235,6 +235,8 @@ export async function getStaticProps({ params }) {
 
     const newResults = Object.values(players);
 
+    console.log(players);
+
     const newerResults = newResults.filter((x) =>
       idsFromCurrentPlayers.includes(x.player_id)
     );
@@ -267,8 +269,6 @@ export async function getStaticProps({ params }) {
       asmc: ownerName ? ownerName : null,
       stats: cleanSingle,
     };
-
-    console.log(results);
 
     return {
       props: { results },
