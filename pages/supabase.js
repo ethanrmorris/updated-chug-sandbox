@@ -19,6 +19,8 @@ export async function getStaticProps() {
 
     const { data: results } = await supabase.from('players').insert(players);
 
+    console.log(data);
+
     return {
       props: { results },
     };
