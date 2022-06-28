@@ -58,30 +58,6 @@ export default function Layout({ children }) {
                   <Link href="/owners">
                     <a>Owners</a>
                   </Link>
-                  {/* <div className={styles.subWrapper}> */}
-                  {/* <ul>
-                  <li>
-                    <Link href="/owners/1">
-                      <a>Ethan</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/owners/2">
-                      <a>Jacob</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/owners/3">
-                      <a>Scott</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/owners/4">
-                      <a>Morgan</a>
-                    </Link>
-                  </li>
-                </ul> */}
-                  {/* </div> */}
                 </li>
                 <li>
                   <Link href="/players">
@@ -89,8 +65,8 @@ export default function Layout({ children }) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/supabase">
-                    <a>Supabase</a>
+                  <Link href="/schedule">
+                    <a>Schedule</a>
                   </Link>
                 </li>
               </ul>

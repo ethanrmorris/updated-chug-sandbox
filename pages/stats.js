@@ -33,11 +33,21 @@ export default function Stats({ results }) {
         Header: 'Year',
         accessor: 'year',
         width: 60,
+        Cell: (e) => (
+          <>
+            <p className="text-right">{e.value}</p>
+          </>
+        ),
       },
       {
         Header: 'Week',
         accessor: 'week',
         width: 60,
+        Cell: (e) => (
+          <>
+            <p className="text-right">{e.value}</p>
+          </>
+        ),
       },
       {
         Header: 'FP',
@@ -105,7 +115,10 @@ export async function getStaticProps() {
       .from('players_games')
       .select(
         `
-        id, player_name, player_id, position, 
+        id,
+        player_name,
+        player_id,
+        position, 
         owner_id (
           team
         ),
@@ -121,6 +134,8 @@ export async function getStaticProps() {
       )
       .lt('week', 18)
       .order('fantasy_points', { ascending: false });
+
+    console.log(results);
 
     return {
       props: { results },

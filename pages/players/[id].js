@@ -5,6 +5,7 @@ import React from 'react';
 import Table from '../../components/careerTable';
 
 import { nflTeams } from '../../utils/nflTeams';
+import { supabase } from '../../utils/supabaseClient';
 
 export default function Player({ results }) {
   const columns = React.useMemo(
@@ -200,83 +201,107 @@ export async function getStaticPaths() {
   return { paths, fallback: false };
 }
 
+// export async function getStaticProps({ params }) {
+//   try {
+//     const [
+//       playersRes,
+//       ownersRes,
+//       rostersRes,
+//       careerRes,
+//       seasonsRes,
+//       detailsRes,
+//       currentPlayersRes,
+//     ] = await Promise.all([
+//       fetch('https://ethanrmorris.github.io/v1/players.json'),
+//       fetch('https://ethanrmorris.github.io/v1/owners.json'),
+//       fetch('https://api.sleeper.app/v1/league/784462448236363776/rosters/'),
+//       fetch('https://ethanrmorris.github.io/v1/stats/players/career.json'),
+//       fetch(`https://ethanrmorris.github.io/v1/stats/players/seasons.json`),
+//       fetch('https://ethanrmorris.github.io/v1/stats/players/details.json'),
+//     ]);
+//     const [players, owners, rosters, career, seasons, details] =
+//       await Promise.all([
+//         playersRes.json(),
+//         ownersRes.json(),
+//         rostersRes.json(),
+//         careerRes.json(),
+//         seasonsRes.json(),
+//         detailsRes.json(),
+//       ]);
+
+//     const idsFromRosters = rosters.map((obj) => obj.players).flat();
+//     const idsFromStats = career.map((obj) => obj.player_id).flat();
+
+//     const idsFromCurrentPlayers = [...idsFromRosters, ...idsFromStats];
+
+//     const newResults = Object.values(players);
+
+//     console.log(players);
+
+//     const newerResults = newResults.filter((x) =>
+//       idsFromCurrentPlayers.includes(x.player_id)
+//     );
+
+//     const [lastResults] = newerResults.filter((obj) => {
+//       return obj.player_id === params.id;
+//     });
+
+//     const playerId = lastResults.player_id;
+
+//     const currentTeam = rosters.find((team) => team.players.includes(playerId));
+
+//     const currentOwner = currentTeam?.roster_id;
+
+//     const cleanOwner = owners.find((owner) => owner.id?.includes(currentOwner));
+
+//     const ownerName = cleanOwner?.slug;
+
+//     const careerResults = Object.values(career);
+
+//     const [careerSingle] = careerResults.filter((obj) => {
+//       return obj.player_id === params.id;
+//     });
+
+//     const cleanSingle = [];
+//     careerSingle ? cleanSingle.push(careerSingle) : cleanSingle.push(null);
+
+//     const results = {
+//       ...lastResults,
+//       asmc: ownerName ? ownerName : null,
+//       stats: cleanSingle,
+//     };
+
+//     return {
+//       props: { results },
+//     };
+//   } catch (err) {
+//     console.error(err);
+//     return {
+//       notFound: true,
+//     };
+//   }
+// }
+
 export async function getStaticProps({ params }) {
   try {
-    const [
-      playersRes,
-      ownersRes,
-      rostersRes,
-      careerRes,
-      seasonsRes,
-      detailsRes,
-      currentPlayersRes,
-    ] = await Promise.all([
-      fetch('https://ethanrmorris.github.io/v1/players.json'),
-      fetch('https://ethanrmorris.github.io/v1/owners.json'),
-      fetch('https://api.sleeper.app/v1/league/784462448236363776/rosters/'),
-      fetch('https://ethanrmorris.github.io/v1/stats/players/career.json'),
-      fetch(`https://ethanrmorris.github.io/v1/stats/players/seasons.json`),
-      fetch('https://ethanrmorris.github.io/v1/stats/players/details.json'),
-    ]);
-    const [players, owners, rosters, career, seasons, details] =
-      await Promise.all([
-        playersRes.json(),
-        ownersRes.json(),
-        rostersRes.json(),
-        careerRes.json(),
-        seasonsRes.json(),
-        detailsRes.json(),
-      ]);
+    const { data } = await supabase
+      .from('players')
+      .select('*')
+      .eq('player_id', params.id);
 
-    const idsFromRosters = rosters.map((obj) => obj.players).flat();
-    const idsFromStats = career.map((obj) => obj.player_id).flat();
+    const results = data[0];
 
-    const idsFromCurrentPlayers = [...idsFromRosters, ...idsFromStats];
+    const { data: games } = await supabase
+      .from('players_games')
+      .select('*')
+      .eq('player_id', params.id);
 
-    const newResults = Object.values(players);
-
-    console.log(players);
-
-    const newerResults = newResults.filter((x) =>
-      idsFromCurrentPlayers.includes(x.player_id)
-    );
-
-    const [lastResults] = newerResults.filter((obj) => {
-      return obj.player_id === params.id;
-    });
-
-    const playerId = lastResults.player_id;
-
-    const currentTeam = rosters.find((team) => team.players.includes(playerId));
-
-    const currentOwner = currentTeam?.roster_id;
-
-    const cleanOwner = owners.find((owner) => owner.id?.includes(currentOwner));
-
-    const ownerName = cleanOwner?.slug;
-
-    const careerResults = Object.values(career);
-
-    const [careerSingle] = careerResults.filter((obj) => {
-      return obj.player_id === params.id;
-    });
-
-    const cleanSingle = [];
-    careerSingle ? cleanSingle.push(careerSingle) : cleanSingle.push(null);
-
-    const results = {
-      ...lastResults,
-      asmc: ownerName ? ownerName : null,
-      stats: cleanSingle,
-    };
+    console.log(games);
 
     return {
-      props: { results },
+      props: { results, games },
     };
   } catch (err) {
     console.error(err);
-    return {
-      notFound: true,
-    };
   }
 }
