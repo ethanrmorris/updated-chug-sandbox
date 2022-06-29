@@ -27,12 +27,38 @@ export async function getStaticProps({ params }) {
   try {
     const { data } = await supabase
       .from('game_box_score')
-      .select('*, owner_id (team, slug), opponent_id (team, slug)')
+      .select(
+        '*, team_id:owner_id (id, team, slug), opp_id:opponent_id (id, team, slug)'
+      )
       .eq('id', params.id);
 
     const results = data[0];
 
-    console.log(results);
+    const {
+      week: gameWeek,
+      year: gameYear,
+      owner_id: gameOwner,
+      opponent_id: gameOpp,
+    } = results;
+    console.log('results', results);
+
+    console.log('gameWeek', gameWeek);
+    console.log('gameYear', gameYear);
+    console.log('gameOwner', gameOwner);
+    console.log('gameOpp', gameOpp);
+
+    const { data: stats } = await supabase
+      .from('players_games')
+      .select('*')
+      .eq('year', gameYear)
+      .eq('week', gameWeek)
+      .or(`owner_id.eq.${gameOwner},owner_id.eq.${gameOpp}`);
+
+    const teamOne = stats.filter((player) => {
+      return player.owner_id === gameOwner;
+    });
+
+    console.log('teamOne', teamOne);
 
     return {
       props: { results },
