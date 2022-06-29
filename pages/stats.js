@@ -135,8 +135,6 @@ export async function getStaticProps() {
       .lt('week', 18)
       .order('fantasy_points', { ascending: false });
 
-    console.log(results);
-
     return {
       props: { results },
     };

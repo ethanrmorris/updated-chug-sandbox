@@ -8,6 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.5",
+    "@heroicons/react": "^1.0.6",
     "@lineup-lite/table": "^1.7.0",
     "@supabase/supabase-js": "^1.35.3",
     "next": "^12.1.0",

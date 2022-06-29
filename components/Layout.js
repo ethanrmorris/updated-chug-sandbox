@@ -30,11 +30,6 @@ export default function Layout({ children }) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/bible">
-                    <a>Bible</a>
-                  </Link>
-                </li>
-                <li>
                   <Link href="/trades">
                     <a>Trades</a>
                   </Link>
