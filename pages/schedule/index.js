@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import FilterDropdown from '../../components/FilterDropdown';
+import MiniBoxScore from '../../components/MiniBoxScore';
 // import _, { groupBy } from 'underscore';
 
 const weeks = [
@@ -25,9 +26,9 @@ const weeks = [
 ];
 
 const years = [
-  { year: 2020, name: '2020' },
-  { year: 2021, name: '2021' },
   { year: 2022, name: '2022' },
+  { year: 2021, name: '2021' },
+  { year: 2020, name: '2020' },
 ];
 
 export default function Schedule({ results }) {
@@ -49,38 +50,17 @@ export default function Schedule({ results }) {
           <FilterDropdown state={week} setState={setWeek} listArray={weeks} />
           <FilterDropdown state={year} setState={setYear} listArray={years} />
         </div>
-        <div>
+        <div className="flex flex-col gap-4 max-w-[800px] mx-auto">
           {filtered.map((game) => (
-            <div key={game.id}>
-              <Link href={`/schedule/${game.id}`}>
-                <a>
-                  <p>{game.week}</p>
-                  <h2>
-                    <span
-                      className={
-                        parseInt(game.team_points) >
-                        parseInt(game.opponent_points)
-                          ? 'font-bold'
-                          : null
-                      }
-                    >
-                      {game.team} {game.team_points}
-                    </span>{' '}
-                    -{' '}
-                    <span
-                      className={
-                        parseInt(game.opponent_points) >
-                        parseInt(game.team_points)
-                          ? 'font-bold'
-                          : null
-                      }
-                    >
-                      {game.opponent_points} {game.opponent}
-                    </span>
-                  </h2>
-                </a>
-              </Link>
-            </div>
+            <MiniBoxScore
+              id={game.id}
+              week={game.week}
+              year={game.year}
+              team={game.team}
+              opponent={game.opponent}
+              teamPoints={game.team_points}
+              opponentPoints={game.opponent_points}
+            />
           ))}
         </div>
       </div>
@@ -96,6 +76,8 @@ export async function getStaticProps() {
 
     // const newResults = _.groupBy(data, 'week');
     // const results = Object.values(newResults);
+
+    console.log(results);
 
     return {
       props: { results },

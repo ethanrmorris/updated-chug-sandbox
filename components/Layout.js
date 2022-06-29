@@ -70,7 +70,9 @@ export default function Layout({ children }) {
           </div>
         </header>
       </div>
-      <main className="p-4 max-w-[1200px] mx-auto">{children}</main>
+      <main className="p-4 max-w-[1200px] mx-auto bg-[#ececec]">
+        {children}
+      </main>
     </>
   );
 }

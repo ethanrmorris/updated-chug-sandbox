@@ -54,8 +54,6 @@ export async function getStaticProps() {
       // .or('owner_1.eq.ethan,owner_2.eq.ethan,owner_3.eq.ethan')
       .order('id', { ascending: false });
 
-    console.log(results);
-
     return {
       props: { results },
     };

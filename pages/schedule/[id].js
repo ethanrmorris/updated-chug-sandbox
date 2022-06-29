@@ -27,7 +27,7 @@ export async function getStaticProps({ params }) {
   try {
     const { data } = await supabase
       .from('game_box_score')
-      .select('*, owner_id (team, slug)')
+      .select('*, owner_id (team, slug), opponent_id (team, slug)')
       .eq('id', params.id);
 
     const results = data[0];
